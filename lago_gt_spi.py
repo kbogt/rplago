@@ -1,13 +1,13 @@
 ###spi control module for redpitaya
 
 #base for housing in memory map
-base=0x400000000
+base=0x40000000 
 #Expansion connector direction addres
-ecdp=0x10 #module p
+ecdp=0x10 #module p 
 ecdn=0x14 #module n
 #Expansion conector output address
-ecop=0x18
-econ=0x1c
+ecop=0x18 #module p
+econ=0x1c #module n
 
 import sys
 import struct
@@ -15,16 +15,22 @@ import os
 import time
 
 def rp_open():
-    os.system("systemctl start redpitaya_scpi")
-    os.system("monitor "+hex(base+ecdn)+" "+hex(1))
+    os.system("systemctl start redpitaya_scpi") #opening scpi
+    os.system("monitor "+hex(base+ecdn)+" "+hex(1)) #setting n port direction
+    time.sleep(0.001)
+    os.system("monitor "+hex(base+econ)+" "+hex(1)) #setting ldac on high
+
 
 def rp_close():
     os.system("systemctl stop redpitaya_scpi")
 
 def rp_loaddac():
-    os.system("monitor "+hex(base+econ)+" "+hex(1))
-    time.sleep(0.001)
+    #os.system("monitor "+hex(base+econ)+" "+hex(1))
+    #time.sleep(0.001)
     os.system("monitor "+hex(base+econ)+" "+hex(0))
+    print "monitor "+hex(base+econ)+" "+hex(0)
+    time.sleep(0.00001)
+    os.system("monitor "+hex(base+econ)+" "+hex(1))
     
 def spi_load(pack):
     os.system("./a.out "+pack)
@@ -40,7 +46,7 @@ class pmt:
         return vdac*self.sfp
     
 class dac:
-    def __init__(self, Ch=4, Vmax=4.68, Vmin=0,  Nbits=12, Nchan=4):
+    def __init__(self, Ch=2, Vmax=4.68, Vmin=0,  Nbits=12, Nchan=4):
         self.vmax=Vmax
         self.vmin=Vmin
         self.dv=Vmax-Vmin
