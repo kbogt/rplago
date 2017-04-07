@@ -2,7 +2,7 @@
 from lago_gt_spi import *
 #####Constantes del sistema
 ##DAC
-Ch=3
+Ch=2
 Vmax=4.68
 Vmin=0
 Nbits=12
