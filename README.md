@@ -20,3 +20,7 @@ Una ejecución típica es:
 **voltage** El valor del voltaje es un entero de 0 a 2000 voltios
 
 **opciones** Opciónes de cambio la única ejecutada actualmente es *v* la cuál despliega lo que se está ejecutando en cada momento, (para debugging)
+
+**PENDIENTE**
+
+Agregar en la librería el control i2c para el sensor de temperatura/presión
