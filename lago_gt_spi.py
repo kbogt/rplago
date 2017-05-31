@@ -1,4 +1,7 @@
-###spi control module for redpitaya
+#!/usr/bin/env python2.7
+
+###spi and bmp180 wrapper module for redpitaya to use in python
+
 
 #base for housing in memory map
 base=0x40000000 
@@ -13,6 +16,18 @@ import sys
 import struct
 import os
 import time
+from ctypes import *
+
+#i2c device info
+i2c_device=c_char_p('/dev/i2c-0')
+i2c_address=c_int(0x77)
+
+librpSerial=CDLL("./src/libbmp180.so")
+#setting return types for preset functions
+librpSerial.temperature.restype=c_float
+librpSerial.pressure.restype=c_long
+librpSerial.altitude.restype=c_float
+
 
 def rp_open():
     os.system("systemctl start redpitaya_scpi") #opening scpi
@@ -33,7 +48,10 @@ def rp_loaddac():
     os.system("monitor "+hex(base+econ)+" "+hex(1))
     
 def spi_load(pack):
-    os.system("./a.out "+pack)
+   # os.system("./a.out "+pack)
+    a=librpSerial.spi_load(pack)
+    print a
+    print pack
 
 class pmt:
     def __init__(self, sfp=773.2):
@@ -44,6 +62,20 @@ class pmt:
 
     def vdac2vpmt(self, vdac):
         return vdac*self.sfp
+
+class bmp180:
+    def __init__(self, address=i2c_address, device=i2c_device):
+	self.address=address
+	self.device=device
+
+    def temperature(self):
+	return librpSerial.temperature(self.address, self.device)
+    
+    def pressure(self):
+	return librpSerial.pressure(self.address, self.device)
+    
+    def altitude(self):
+	return librpSerial.altitude(self.address, self.device)
     
 class dac:
     def __init__(self, Ch=2, Vmax=4.68, Vmin=0,  Nbits=12, Nchan=4):

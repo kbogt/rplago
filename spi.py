@@ -7,7 +7,7 @@ Vmax=4.68
 Vmin=0
 Nbits=12
 ##PMT
-fep=773.2 #Factor de escala del pmt 1 vin == <fep> vpmt
+fep=807.23 #Factor de escala del pmt 1 vin == <fep> vpmt
 
 verbose=False
 
@@ -36,5 +36,10 @@ rp_loaddac()
 if verbose: print "loaddac cargado"
 #rp_close()
 #print "cerrando scpi"
+bmp=bmp180()
 
 print "PMT polarizado a "+str(val)+" voltios."
+print "Temperatura: "+str(bmp.temperature())+"C"+" Presion: "+str(bmp.pressure())+"Pa"" Altitud: "+str(bmp.altitude())+"msnm"
+
+
+
