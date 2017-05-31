@@ -39,7 +39,7 @@ if verbose: print "loaddac cargado"
 bmp=bmp180()
 
 print "PMT polarizado a "+str(val)+" voltios."
-print "Temperatura: "+str(bmp.temperature())+"C"+" Presion: "+str(bmp.pressure())+"Pa"" Altitud: "+str(bmp.altitude())+"msnm"
+print "Temperatura: "+str(round(bmp.temperature(),2))+ " C"+" Presion: "+str(bmp.pressure())+" Pa"" Altitud: "+str(round(bmp.altitude(),2))+" msnm"
 
 
 
